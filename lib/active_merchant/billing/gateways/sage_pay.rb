@@ -71,10 +71,11 @@ module ActiveMerchant #:nodoc:
         commit(:purchase, post)
       end
 
-      def purchase_subscription(identification, money, options ={})
+      def purchase_subscription(money, identification, options ={})
         
         post = {}
 
+        add_reference(post, identification)
         add_credit_reference(post, identification)
         add_invoice(post, options)
         add_amount(post, money, options)
