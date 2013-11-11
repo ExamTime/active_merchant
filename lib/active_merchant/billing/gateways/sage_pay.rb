@@ -18,7 +18,8 @@ module ActiveMerchant #:nodoc:
         :authorization => 'DEFERRED',
         :capture => 'RELEASE',
         :void => 'VOID',
-        :abort => 'ABORT'
+        :abort => 'ABORT',
+        :recurring => 'REPEAT'
       }
 
       CREDIT_CARDS = {
@@ -68,6 +69,18 @@ module ActiveMerchant #:nodoc:
         add_optional_data(post, options)
 
         commit(:purchase, post)
+      end
+
+      def purchase_subscription(identification, money, options ={})
+        
+        post = {}
+
+        add_credit_reference(post, identification)
+        add_invoice(post, options)
+        add_amount(post, money, options)
+        add_address(post, options)
+
+        commit(:recurring, post)
       end
 
       def authorize(money, credit_card, options = {})
@@ -121,6 +134,8 @@ module ActiveMerchant #:nodoc:
         deprecated CREDIT_DEPRECATION_MESSAGE
         refund(money, identification, options)
       end
+
+
 
       private
       def add_reference(post, identification)
