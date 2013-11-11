@@ -78,10 +78,9 @@ module ActiveMerchant #:nodoc:
         add_reference(post, identification)
         add_credit_reference(post, identification)
         add_pair(post, :Description, options[:description] || options[:order_id])
-        binding.pry
         add_amount(post, money, options)
         add_address(post, options)
-
+        add_pair(post, :VendorTxCode, options[:order_id])
         commit(:recurring, post)
       end
 
