@@ -76,6 +76,7 @@ module ActiveMerchant #:nodoc:
         post = {}
 
         add_reference(post, identification)
+        binding.pry
         add_credit_reference(post, identification)
         add_invoice(post, options)
         add_amount(post, money, options)
@@ -141,7 +142,7 @@ module ActiveMerchant #:nodoc:
       private
       def add_reference(post, identification)
         order_id, transaction_id, authorization, security_key = identification.split(';')
-
+        binding.pry
         add_pair(post, :VendorTxCode, order_id)
         add_pair(post, :VPSTxId, transaction_id)
         add_pair(post, :TxAuthNo, authorization)
