@@ -37,6 +37,13 @@ class SagePayTest < Test::Unit::TestCase
     assert_success response
   end
 
+  def test_successful_recurring_purchase
+    @gateway.expects(:ssl_post).twice.returns(successful_purchase_response)
+    assert authorize_response = @gateway.authorize(@amount, @credit_card, @options)
+    assert response = @gateway.purchase_subscription(@amount, authorize_response.authorization, {:description => 'Recurring payment', :order_id => Time.now.to_i, :currency => 'EUR'})
+    assert_success response
+  end
+
   def test_unsuccessful_purchase
     @gateway.expects(:ssl_post).returns(unsuccessful_purchase_response)
 
