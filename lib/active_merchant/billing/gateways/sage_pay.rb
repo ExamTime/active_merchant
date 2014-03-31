@@ -19,7 +19,8 @@ module ActiveMerchant #:nodoc:
         :capture => 'RELEASE',
         :void => 'VOID',
         :abort => 'ABORT',
-        :recurring => 'REPEAT'
+        :recurring => 'REPEAT',
+        :three_d_complete => 'DIRECT3DCALLBACK'
       }
 
       CREDIT_CARDS = {
@@ -72,7 +73,7 @@ module ActiveMerchant #:nodoc:
       end
 
       def purchase_subscription(money, identification, options ={})
-        
+
         post = {}
 
         add_reference(post, identification)
@@ -82,6 +83,11 @@ module ActiveMerchant #:nodoc:
         add_address(post, options)
         add_pair(post, :VendorTxCode, options[:order_id])
         commit(:recurring, post)
+      end
+
+      # Completes a 3D Secure transaction
+      def three_d_complete(pa_res, md)
+        commit(:three_d_complete, 'PARes' => pa_res, 'MD' => md)
       end
 
       def authorize(money, credit_card, options = {})

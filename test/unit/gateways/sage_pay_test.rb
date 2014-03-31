@@ -60,6 +60,17 @@ class SagePayTest < Test::Unit::TestCase
     assert_equal 'https://test.sagepay.com/gateway/service/release.vsp', @gateway.send(:url_for, :capture)
   end
 
+  def test_three_d_complete
+    @gateway.stubs(:ssl_post).returns(successful_purchase_response)
+
+    response = @gateway.three_d_complete('PARes VALUE','MD VALUE')
+    assert_success response
+  end
+
+  def test_three_d_complete_url
+    assert_equal 'https://test.sagepay.com/gateway/service/direct3dcallback.vsp', @gateway.send(:url_for, :three_d_complete)
+  end
+
   def test_electron_cards
     # Visa range
     assert_no_match SagePayGateway::ELECTRON, '4245180000000000'
