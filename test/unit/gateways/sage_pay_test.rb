@@ -63,7 +63,7 @@ class SagePayTest < Test::Unit::TestCase
   def test_three_d_complete
     @gateway.stubs(:ssl_post).returns(successful_purchase_response)
 
-    response = @gateway.three_d_complete('PARes VALUE','MD VALUE')
+    response = @gateway.three_d_complete('PARes VALUE','MD VALUE', {order_id: 'order_id VALUE'})
     assert_success response
   end
 

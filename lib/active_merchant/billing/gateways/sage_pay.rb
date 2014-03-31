@@ -86,8 +86,16 @@ module ActiveMerchant #:nodoc:
       end
 
       # Completes a 3D Secure transaction
-      def three_d_complete(pa_res, md)
-        commit(:three_d_complete, 'PARes' => pa_res, 'MD' => md)
+      def three_d_complete(pa_res, md, options={})
+        requires!(options, :order_id)
+
+        post = {}
+
+        add_pair(post, :PARes, pa_res)
+        add_pair(post, :MD, md)
+        add_pair(post, :VendorTxCode, options[:order_id])
+
+        commit(:three_d_complete, post)
       end
 
       def authorize(money, credit_card, options = {})
